@@ -46,7 +46,7 @@ namespace LonoNet.Client
             _deviceId = deviceId;
             LoadClient();
             _clientId = clientId;
-            _clientSecret = clientId;
+            _clientSecret = clientSecret;
             UserLogin = null;
         }
 

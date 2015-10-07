@@ -27,9 +27,9 @@ namespace LonoNetTest
             ZoneState zs = client.GetActiveZone();
             ZoneInfo zi = client.GetAllZones();
             DeviceInfo di = client.GetDeviceInfo();
-            client.SetZoneOn(1);
+            client.SetZone(1, true);
             Thread.Sleep(10);
-            client.SetZoneOff(1);
+            client.SetZone(1, false);
         }
 
         [TestMethod]
@@ -44,9 +44,9 @@ namespace LonoNetTest
             ZoneState zs = client.GetActiveZone();
             ZoneInfo zi = client.GetAllZones();
             DeviceInfo di = client.GetDeviceInfo();
-            client.SetZoneOn(1);
+            client.SetZone(1, true);
             Thread.Sleep(10);
-            client.SetZoneOff(1);
+            client.SetZone(1, false);
         }
     }
 }

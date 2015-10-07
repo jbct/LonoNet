@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>LonoNet</id>
+    <version>0.1.0</version>
+    <authors>James Burke, GitHub Contributors</authors>
+    <owners>James Burke</owners>
+    <description>.NET library for the Lono Public API (.NET 4)</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/jbct/LonoNet</projectUrl>
+    <licenseUrl>https://github.com/jbct/LonoNet/blob/master/LICENSE</licenseUrl>
+    <tags>LONO IOT API .NET SPRINKLER</tags>
+    <dependencies>
+      <dependency id="RestSharp" version="105.0.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="LonoNet\bin\Release\LonoNet.dll" target="lib\net40" />
+  </files>
+</package>

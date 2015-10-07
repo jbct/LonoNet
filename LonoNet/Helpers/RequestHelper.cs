@@ -18,28 +18,30 @@ namespace LonoNet.Helpers
             _deviceId = deviceId;
         }
 
-        public RestRequest TurnZoneOn(int zoneId)
+        /// <summary>
+        /// Turns a zone off or on. When specifing a zone, keep in
+        /// mind they are zero based, so to turn on zone 1 you'd want
+        /// to specify 0 for the zoneId.
+        /// </summary>
+        /// <param name="zoneId">The zone to turn on or off.</param>
+        /// <param name="isEnabled">true to turn the zone on, false otherwise.</param>
+        /// <returns></returns>
+        public RestRequest SetZone(int zoneId, bool isEnabled)
         {
             var request = new RestRequest(Method.POST);
-            request.Resource = "api/{version}/devices/{deviceId}/zones/{zoneId}/on";
+            request.Resource = "api/{version}/devices/{deviceId}/zones/{zoneId}/{state}";
             request.AddParameter("version", _version, ParameterType.UrlSegment);
             request.AddParameter("deviceId", _deviceId, ParameterType.UrlSegment);
             request.AddParameter("zoneId", zoneId, ParameterType.UrlSegment);
+            request.AddParameter("state", isEnabled ? "on" : "off", ParameterType.UrlSegment);
 
             return request;
         }
 
-        public RestRequest TurnZoneOff(int zoneId)
-        {
-            var request = new RestRequest(Method.POST);
-            request.Resource = "api/{version}/devices/{deviceId}/zones/{zoneId}/off";
-            request.AddParameter("version", _version, ParameterType.UrlSegment);
-            request.AddParameter("deviceId", _deviceId, ParameterType.UrlSegment);
-            request.AddParameter("zoneId", zoneId, ParameterType.UrlSegment);
-
-            return request;
-        }
-
+        /// <summary>
+        /// Get the current zone that is enabled on Lono (No zone on will be null).
+        /// </summary>
+        /// <returns></returns>
         public RestRequest GetZoneState()
         {
             var request = new RestRequest(Method.GET);
@@ -50,6 +52,11 @@ namespace LonoNet.Helpers
             return request;
         }
 
+        /// <summary>
+        /// Get a bunch of metadata that is stored internally with each Zone, like
+        /// cycle time and soil type.
+        /// </summary>
+        /// <returns></returns>
         public RestRequest GetZoneInfo()
         {
             var request = new RestRequest(Method.GET);
@@ -60,11 +67,30 @@ namespace LonoNet.Helpers
             return request;
         }
 
+        /// <summary>
+        /// Update the zones zonnected to a Lono with the zones specified. Zones is
+        /// an array of zone objects (like what you'd receive from GetZoneInfo).
+        /// </summary>
+        /// <returns></returns>
         public RestRequest UpdateZones()
         {
             throw new NotImplementedException();
+
+            //var request = new RestRequest(Method.PUT);
+            //request.Resource = "api/{version}/devices/{deviceId}/zones";
+            //request.AddParameter("version", _version, ParameterType.UrlSegment);
+            //request.AddParameter("deviceId", _deviceId, ParameterType.UrlSegment);
+
+            //// body contains zones array
+
+            //return request;
         }
 
+        /// <summary>
+        /// Run a zone detect sequence to discover which zones have been attached to
+        /// Lono.
+        /// </summary>
+        /// <returns></returns>
         public RestRequest DetectZones()
         {
             var request = new RestRequest(Method.POST);
@@ -75,6 +101,11 @@ namespace LonoNet.Helpers
             return request;
         }
 
+        /// <summary>
+        /// Get a bunch of metadata that is stored internally with Lono, like
+        /// hardware revision information and basic scheduling options.
+        /// </summary>
+        /// <returns></returns>
         public RestRequest GetLonoInfo()
         {
             var request = new RestRequest(Method.GET);
@@ -83,6 +114,28 @@ namespace LonoNet.Helpers
             request.AddParameter("deviceId", _deviceId, ParameterType.UrlSegment);
 
             return request;
+        }
+
+        /// <summary>
+        /// Set the Lono's internal LED Color.
+        /// </summary>
+        /// <returns></returns>
+        public RestRequest SetLed()
+        {
+            throw new NotImplementedException();
+
+            //var request = new RestRequest(Method.POST);
+            //request.Resource = "api/{version}/devices/{deviceId}/state";
+            //request.AddParameter("version", _version, ParameterType.UrlSegment);
+            //request.AddParameter("deviceId", _deviceId, ParameterType.UrlSegment);
+
+            //// color
+            //// mode
+            //// brightness
+            //// interval
+            //// times
+
+            //return request;
         }
 
         /// <summary>

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LonoNet.Models
+﻿namespace LonoNet.Models
 {
     public class UserLogin
     {

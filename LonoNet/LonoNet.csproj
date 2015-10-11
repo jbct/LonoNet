@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,20 +48,22 @@
   <ItemGroup>
     <Compile Include="Authenticators\OAuth2Authenticator.cs" />
     <Compile Include="Client\Client.cs" />
-    <Compile Include="Client\Device.Sync.cs" />
+    <Compile Include="Client\Device.cs" />
     <Compile Include="Client\ILonoNetClient.cs" />
     <Compile Include="Exceptions\LonoException.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
+    <Compile Include="Models\DetectZoneInfo.cs" />
     <Compile Include="Models\DeviceInfo.cs" />
     <Compile Include="Models\GenericResult.cs" />
-    <Compile Include="Models\OAuth2AccessToken.cs" />
+    <Compile Include="Models\AccessToken.cs" />
+    <Compile Include="Models\SetLedOptions.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\ZoneInfo.cs" />
     <Compile Include="Models\ZoneState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\User.Sync.cs" />
+    <Compile Include="Client\User.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

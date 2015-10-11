@@ -11,7 +11,7 @@ namespace LonoNet.Client
         public ZoneState GetActiveZone()
         {
             var request = _requestHelper.GetZoneState();
-            return ExecuteSync<ZoneState>(request);
+            return Execute<ZoneState>(request);
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace LonoNet.Client
         public ZoneInfo GetAllZones()
         {
             var request = _requestHelper.GetZoneInfo();
-            return ExecuteSync<ZoneInfo>(request);
+            return Execute<ZoneInfo>(request);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace LonoNet.Client
         public DeviceInfo GetDeviceInfo()
         {
             var request = _requestHelper.GetLonoInfo();
-            return ExecuteSync<DeviceInfo>(request);
+            return Execute<DeviceInfo>(request);
         }
 
         /// <summary>
@@ -45,7 +45,23 @@ namespace LonoNet.Client
         public GenericResult SetZone(int zoneId, bool isEnabled)
         {
             var request = _requestHelper.SetZone(zoneId, isEnabled);
-            return ExecuteSync<GenericResult>(request);
+            return Execute<GenericResult>(request);
         }
+
+        /// <summary>
+        /// Detects the zones connected to the Lono device.
+        /// </summary>
+        /// <returns>Object containing detected zones</returns>
+        public DetectZoneInfo DetectZones()
+        {
+            var request = _requestHelper.DetectZones();
+            return Execute<DetectZoneInfo>(request);
+        }
+
+        //public GenericResult SetLed(int desiredColor, LedMode desiredMode)
+        //{
+        //    var request = _requestHelper.SetLed(desiredColor, desiredMode);
+        //    return Execute<GenericResult>(request);
+        //}
     }
 }

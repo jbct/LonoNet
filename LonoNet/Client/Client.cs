@@ -1,9 +1,7 @@
-﻿using LonoNet.Authenticators;
-using LonoNet.Exceptions;
+﻿using LonoNet.Exceptions;
 using LonoNet.Helpers;
 using LonoNet.Models;
 using RestSharp;
-using RestSharp.Authenticators;
 using RestSharp.Deserializers;
 using System;
 using System.Net;
@@ -16,6 +14,12 @@ namespace LonoNet.Client
         private const string ApiBaseUrl = "http://make.lono.io";
         private const string Version = "v1";
 
+        private readonly string _clientId;
+        private readonly string _clientSecret;
+        private readonly string _deviceId;
+
+        private RestClient _restClient;
+        private RequestHelper _requestHelper;
         private UserLogin _userLogin;
 
         public UserLogin UserLogin
@@ -24,19 +28,12 @@ namespace LonoNet.Client
             set
             {
                 _userLogin = value;
-                SetAuthProviders();
+                SetAuthProvider();
             }
         }
 
-        private readonly string _clientId;
-        private readonly string _clientSecret;
-        private readonly string _deviceId;
-
-        private RestClient _restClient;
-        private RequestHelper _requestHelper;
-
         /// <summary>
-        /// Default Constructor for the LonoNetClient
+        /// Creates an instance of the LonoNetClient
         /// </summary>
         /// <param name="clientId">The developer client ID to use for the Lono requests</param>
         /// <param name="clientSecret">The developer client secret to use for the Lono requests</param>
@@ -51,7 +48,7 @@ namespace LonoNet.Client
         }
 
         /// <summary>
-        /// Creates an instance of the LonoNetClient given a developer client ID, client secret and an OAuth2 access token
+        /// Creates an instance of the LonoNetClient
         /// </summary>
         /// <param name="clientId">The developer client ID to use for the Lono requests</param>
         /// <param name="clientSecret">The developer client secret to use for the Lono requests</param>
@@ -61,6 +58,24 @@ namespace LonoNet.Client
             : this(clientId, clientSecret, deviceId)
         {
             UserLogin = new UserLogin { Token = accessToken };
+        }
+
+        /// <summary>
+        /// First step of authorizing your application. This builds an OAuth 2.0 URL that you'll need to send users to in order for them to authorize your application. It is recommended that you
+        /// launch the resulting URI in the user's default browser. Once they approve, they will be redirected to the URL specified by the 'redirectUri' parameter.
+        /// </summary>
+        /// <param name="redirectUri">Where to redirect the user after authorization has been granted.</param>
+        /// <param name="scope">The scope requested for this session. "write" gives full access.</param>
+        /// <returns>A URL to which your app should redirect the user for authorization. After the user authorizes your app, they will be sent to your redirect URI.</returns>
+        public string BuildAuthorizationUrl(string redirectUri, string scope = "write")
+        {
+            if (string.IsNullOrWhiteSpace(redirectUri))
+            {
+                throw new ArgumentNullException("redirectUri");
+            }
+
+            RestRequest request = _requestHelper.BuildAuthorizationUrl(_clientId, redirectUri, scope);
+            return _restClient.BuildUri(request).ToString();
         }
 
         private void LoadClient()
@@ -73,17 +88,14 @@ namespace LonoNet.Client
             _requestHelper = new RequestHelper(Version, _deviceId);
         }
 
-        public string BuildAuthorizeUrl(OAuth2AuthorizationFlow oAuth2AuthorizationFlow, string redirectUri, string scope = "write")
+        private void SetAuthProvider()
         {
-            if (string.IsNullOrWhiteSpace(redirectUri))
-            {
-                throw new ArgumentNullException("redirectUri");
-            }
-            RestRequest request = _requestHelper.BuildOAuth2AuthorizeUrl(oAuth2AuthorizationFlow, _clientId, redirectUri, scope);
-            return _restClient.BuildUri(request).ToString();
+            var userToken = UserLogin == null ? null : UserLogin.Token;
+
+            _restClient.Authenticator = new OAuth2Authenticator(userToken);
         }
 
-        private T ExecuteSync<T>(IRestRequest request) where T : new()
+        private T Execute<T>(IRestRequest request) where T : new()
         {
             IRestResponse<T> response;
             response = _restClient.Execute<T>(request);
@@ -94,31 +106,6 @@ namespace LonoNet.Client
             }
 
             return response.Data;
-        }
-
-        private IRestResponse ExecuteSync(IRestRequest request)
-        {
-            IRestResponse response;
-            response = _restClient.Execute(request);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new LonoRestException(response, HttpStatusCode.OK);
-            }
-
-            return response;
-        }
-
-        private void SetAuthProviders()
-        {
-            _restClient.Authenticator = GetAuthenticator(_restClient.BaseUrl.ToString());
-        }
-
-        private IAuthenticator GetAuthenticator(string baseUrl)
-        {
-            var userToken = UserLogin == null ? null : UserLogin.Token;
-            //var userSecret = UserLogin == null ? null : UserLogin.Secret;
-            return new OAuth2Authenticator(userToken);
         }
     }
 }

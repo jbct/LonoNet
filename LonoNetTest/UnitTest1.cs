@@ -22,7 +22,7 @@ namespace LonoNetTest
         public void TestMethod1()
         {
             LonoNetClient client = new LonoNetClient(_clientId, _clientSecret, _authToken, _deviceId);
-            var login = client.GetAccessToken(_authCode, "http://localhost");
+            var login = client.GetAccessToken(_authCode);
 
             ZoneState zs = client.GetActiveZone();
             ZoneInfo zi = client.GetAllZones();
@@ -36,10 +36,10 @@ namespace LonoNetTest
         public void TestMethod2()
         {
             LonoNetClient client = new LonoNetClient(_clientId, _clientSecret, _deviceId);
-            string url = client.BuildAuthorizeUrl(LonoNet.Authenticators.OAuth2AuthorizationFlow.Code, "http://localhost", "write");
+            string url = client.BuildAuthorizationUrl("http://localhost", "write");
             // Launch url
             // set _authCode to value returned in url
-            var login = client.GetAccessToken(_authCode, "http://localhost");
+            var login = client.GetAccessToken(_authCode);
 
             ZoneState zs = client.GetActiveZone();
             ZoneInfo zi = client.GetAllZones();

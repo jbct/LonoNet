@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>LonoNet</id>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <authors>James Burke, GitHub Contributors</authors>
     <owners>James Burke</owners>
     <description>.NET library for the Lono Public API (.NET 4)</description>
@@ -15,6 +15,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="LonoNet\bin\Release\LonoNet.dll" target="lib\net40" />
+    <file src="bin\Release\LonoNet.dll" target="lib\net40" />
   </files>
 </package>

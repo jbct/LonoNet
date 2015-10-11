@@ -1,0 +1,18 @@
+version: 0.2.{build}
+
+configuration: Release
+test: off
+build:
+  project: LonoNet.sln
+  publish_nuget: true
+  publish_nuget_symbols: false
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+# scripts to run before build
+before_build: nuget restore
